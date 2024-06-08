@@ -105,9 +105,8 @@ func (mt *MessagesText) createHeader(w io.Writer, m discord.Message, isReply boo
 		fmt.Fprintf(w, "[::d]%s[::D] ", time)
 	}
 
-
 	if isReply {
-		fmt.Fprintf(w, "[::u]")
+		fmt.Fprintf(w, "[-:-:u]")
 	} else {
 		fmt.Fprintf(w, "[-:-:b][%s]", cfg.Theme.MessagesText.AuthorColor)
 	}
