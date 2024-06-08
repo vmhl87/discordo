@@ -80,6 +80,8 @@ func (mi *MessageInput) send() {
 		return
 	}
 
+	text = strings.Replace(text, "\\n", "\n", -1)
+
 	if mi.replyMessageIdx != -1 {
 		ms, err := discordState.Cabinet.Messages(mainFlex.guildsTree.selectedChannelID)
 		if err != nil {

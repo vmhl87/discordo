@@ -99,18 +99,23 @@ func (mt *MessagesText) createMessage(m discord.Message) {
 func (mt *MessagesText) createHeader(w io.Writer, m discord.Message, isReply bool) {
 	time := m.Timestamp.Time().In(time.Local).Format(cfg.TimestampsFormat)
 
-	if cfg.Timestamps && cfg.TimestampsBeforeAuthor {
-		fmt.Fprintf(w, "[::d]%s[::-] ", time)
+	if isReply {
+		fmt.Fprintf(mt, "[::id]%s", cfg.Theme.MessagesText.ReplyIndicator)
+	} else {
+		fmt.Fprintf(w, "[::u]%s[::U] ", time)
 	}
+
 
 	if isReply {
-		fmt.Fprintf(mt, "[::d]%s", cfg.Theme.MessagesText.ReplyIndicator)
+		fmt.Fprintf(w, "[::u]")
+	} else {
+		fmt.Fprintf(w, "[-:-:b][%s]", cfg.Theme.MessagesText.AuthorColor)
 	}
 
-	fmt.Fprintf(w, "[%s]%s[-:-:-] ", cfg.Theme.MessagesText.AuthorColor, m.Author.Username)
+	fmt.Fprintf(w, "%s[-:-:-] ", m.Author.Username)
 
-	if cfg.Timestamps && !cfg.TimestampsBeforeAuthor {
-		fmt.Fprintf(w, "[::d]%s[::-] ", time)
+	if isReply {
+		fmt.Fprintf(mt, "[::id]")
 	}
 }
 
