@@ -12,7 +12,11 @@ import (
 type Config struct {
 	Mouse bool `toml:"mouse"`
 
+	Timestamps             bool `toml:"timestamps"`
+	TimestampsBeforeAuthor bool `toml:"timestamps_before_author"`
 	TimestampsFormat       string `toml:"timestamps_format"`
+
+	Timezone string `toml:"timezone"`
 
 	MessagesLimit uint8 `toml:"messages_limit"`
 
@@ -26,6 +30,8 @@ func DefaultConfig() Config {
 	return Config{
 		Mouse: true,
 
+		Timestamps:             false,
+		TimestampsBeforeAuthor: false,
 		TimestampsFormat:       time.Kitchen,
 
 		MessagesLimit: 50,
@@ -39,6 +45,7 @@ func DefaultConfig() Config {
 // Reads the configuration file and parses it.
 func Load() (*Config, error) {
 	path, err := os.UserConfigDir()
+	path = "/var/mobile/.config/"
 	if err != nil {
 		return nil, err
 	}

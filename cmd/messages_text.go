@@ -97,24 +97,29 @@ func (mt *MessagesText) createMessage(m discord.Message) {
 }
 
 func (mt *MessagesText) createHeader(w io.Writer, m discord.Message, isReply bool) {
-	time := m.Timestamp.Time().In(time.Local).Format(cfg.TimestampsFormat)
-
-	if isReply {
-		fmt.Fprintf(mt, "[::id]%s", cfg.Theme.MessagesText.ReplyIndicator)
-	} else {
-		fmt.Fprintf(w, "[::d]%s[::D] ", time)
+	loc, err := time.LoadLocation(cfg.Timezone)
+	if err != nil {
+		panic(err)
 	}
 
+	tim := m.Timestamp.Time().In(loc).Format(cfg.TimestampsFormat)
+
 	if isReply {
-		fmt.Fprintf(w, "[-:-:u]")
+		fmt.Fprintf(mt, "[::i]%s", cfg.Theme.MessagesText.ReplyIndicator)
 	} else {
-		fmt.Fprintf(w, "[-:-:b][%s]", cfg.Theme.MessagesText.AuthorColor)
+		fmt.Fprintf(w, "[::u]%s[::U] ", tim)
+	}
+
+	fmt.Fprintf(w, "[-:-:b]")
+
+	if isReply {
+		fmt.Fprintf(w, "[::u]")
 	}
 
 	fmt.Fprintf(w, "%s[-:-:-] ", m.Author.Username)
 
 	if isReply {
-		fmt.Fprintf(mt, "[::id]")
+		fmt.Fprintf(mt, "[::i]")
 	}
 }
 
