@@ -102,7 +102,7 @@ func (mt *MessagesText) createHeader(w io.Writer, m discord.Message, isReply boo
 	if isReply {
 		fmt.Fprintf(mt, "[::id]%s", cfg.Theme.MessagesText.ReplyIndicator)
 	} else {
-		fmt.Fprintf(w, "[::u]%s[::U] ", time)
+		fmt.Fprintf(w, "[::d]%s[::D] ", time)
 	}
 
 
