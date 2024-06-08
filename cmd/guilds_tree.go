@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"log"
 	"sort"
 	"strings"
@@ -28,16 +27,13 @@ func newGuildsTree() *GuildsTree {
 
 	gt.SetTopLevel(1)
 	gt.SetGraphics(cfg.Theme.GuildsTree.Graphics)
-	gt.SetBackgroundColor(tcell.GetColor(cfg.Theme.BackgroundColor))
 	gt.SetSelectedFunc(gt.onSelected)
 
 	gt.SetTitle("Guilds")
-	gt.SetTitleColor(tcell.GetColor(cfg.Theme.TitleColor))
 	gt.SetTitleAlign(tview.AlignLeft)
 
 	p := cfg.Theme.BorderPadding
 	gt.SetBorder(cfg.Theme.Border)
-	gt.SetBorderColor(tcell.GetColor(cfg.Theme.BorderColor))
 	gt.SetBorderPadding(p[0], p[1], p[2], p[3])
 
 	gt.SetInputCapture(gt.onInputCapture)
@@ -48,8 +44,6 @@ func (gt *GuildsTree) createFolderNode(folder gateway.GuildFolder) {
 	var name string
 	if folder.Name == "" {
 		name = "Folder"
-	} else {
-		name = fmt.Sprintf("[%s]%s[-]", folder.Color.String(), folder.Name)
 	}
 
 	root := gt.GetRoot()

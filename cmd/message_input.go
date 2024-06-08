@@ -26,7 +26,6 @@ func newMessageInput() *MessageInput {
 		replyMessageIdx: -1,
 	}
 
-	mi.SetTextStyle(tcell.StyleDefault.Background(tcell.GetColor(cfg.Theme.BackgroundColor)))
 	mi.SetClipboard(func(s string) {
 		_ = clipboard.WriteAll(s)
 	}, func() string {
@@ -35,14 +34,11 @@ func newMessageInput() *MessageInput {
 	})
 
 	mi.SetInputCapture(mi.onInputCapture)
-	mi.SetBackgroundColor(tcell.GetColor(cfg.Theme.BackgroundColor))
 
-	mi.SetTitleColor(tcell.GetColor(cfg.Theme.TitleColor))
 	mi.SetTitleAlign(tview.AlignLeft)
 
 	p := cfg.Theme.BorderPadding
 	mi.SetBorder(cfg.Theme.Border)
-	mi.SetBorderColor(tcell.GetColor(cfg.Theme.BorderColor))
 	mi.SetBorderPadding(p[0], p[1], p[2], p[3])
 
 	return mi

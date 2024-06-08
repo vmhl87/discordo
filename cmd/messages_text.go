@@ -29,7 +29,6 @@ func newMessagesText() *MessagesText {
 		selectedMessage: -1,
 	}
 
-	mt.SetDynamicColors(true)
 	mt.SetRegions(true)
 	mt.SetWordWrap(true)
 	mt.SetInputCapture(mt.onInputCapture)
@@ -38,15 +37,11 @@ func newMessagesText() *MessagesText {
 		app.Draw()
 	})
 
-	mt.SetBackgroundColor(tcell.GetColor(cfg.Theme.BackgroundColor))
-
 	mt.SetTitle("Messages")
-	mt.SetTitleColor(tcell.GetColor(cfg.Theme.TitleColor))
 	mt.SetTitleAlign(tview.AlignLeft)
 
 	p := cfg.Theme.BorderPadding
 	mt.SetBorder(cfg.Theme.Border)
-	mt.SetBorderColor(tcell.GetColor(cfg.Theme.BorderColor))
 	mt.SetBorderPadding(p[0], p[1], p[2], p[3])
 
 	return mt

@@ -12,8 +12,6 @@ import (
 type Config struct {
 	Mouse bool `toml:"mouse"`
 
-	Timestamps             bool `toml:"timestamps"`
-	TimestampsBeforeAuthor bool `toml:"timestamps_before_author"`
 	TimestampsFormat       string `toml:"timestamps_format"`
 
 	Timezone string `toml:"timezone"`
@@ -30,8 +28,6 @@ func DefaultConfig() Config {
 	return Config{
 		Mouse: true,
 
-		Timestamps:             false,
-		TimestampsBeforeAuthor: false,
 		TimestampsFormat:       time.Kitchen,
 
 		MessagesLimit: 50,
