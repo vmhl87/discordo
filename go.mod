@@ -1,6 +1,6 @@
 module github.com/ayn2op/discordo
 
-go 1.23
+go 1.19
 
 require (
 	github.com/BurntSushi/toml v1.4.0

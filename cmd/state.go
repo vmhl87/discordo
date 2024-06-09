@@ -10,6 +10,7 @@ import (
 	"github.com/diamondburned/arikawa/v3/gateway"
 	"github.com/diamondburned/arikawa/v3/state"
 	"github.com/diamondburned/arikawa/v3/utils/httputil/httpdriver"
+	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
 )
 
@@ -84,6 +85,31 @@ func (s *State) onReady(r *gateway.ReadyEvent) {
 func (s *State) onMessageCreate(m *gateway.MessageCreateEvent) {
 	if mainFlex.guildsTree.selectedChannelID.IsValid() && mainFlex.guildsTree.selectedChannelID == m.ChannelID {
 		mainFlex.messagesText.createMessage(m.Message)
+	} else {
+		for _, guild := range mainFlex.guildsTree.GetRoot().GetChildren() {
+			if guild.GetReference() == m.GuildID {
+				if (len(guild.GetChildren()) == 0 || !guild.IsExpanded()) {
+					guild.SetColor(tcell.GetColor(cfg.Theme.TitleColor))
+				}
+
+				for _, channel := range guild.GetChildren() {
+					if (len(channel.GetChildren()) == 0) {
+						if channel.GetReference() == m.ChannelID {
+							channel.SetColor(tcell.GetColor(cfg.Theme.TitleColor))
+						}
+					} else {
+						for _, chi := range channel.GetChildren() {
+							if chi.GetReference() == m.ChannelID {
+								chi.SetColor(tcell.GetColor(cfg.Theme.TitleColor))
+								if !channel.IsExpanded() {
+									channel.SetColor(tcell.GetColor(cfg.Theme.TitleColor))
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 }
 

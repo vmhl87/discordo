@@ -16,6 +16,8 @@ type GuildsTree struct {
 	*tview.TreeView
 
 	selectedChannelID discord.ChannelID
+
+	DMs []*tview.TreeNode
 }
 
 func newGuildsTree() *GuildsTree {
@@ -72,6 +74,20 @@ func (gt *GuildsTree) createGuildNode(n *tview.TreeNode, g discord.Guild) {
 	guildNode := tview.NewTreeNode(g.Name)
 	guildNode.SetReference(g.ID)
 	n.AddChild(guildNode)
+
+	cs, err := discordState.Cabinet.Channels(g.ID)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	sort.Slice(cs, func(i, j int) bool {
+		return cs[i].Position < cs[j].Position
+	})
+
+	gt.createChannelNodes(guildNode, cs)
+
+	guildNode.SetExpanded(false)
 }
 
 func (gt *GuildsTree) channelToString(c discord.Channel) string {
@@ -122,8 +138,8 @@ func (gt *GuildsTree) createChannelNode(n *tview.TreeNode, c discord.Channel) *t
 	}
 
 	channelNode := tview.NewTreeNode(gt.channelToString(c))
-	channelNode.SetReference(c.ID)
 	channelNode.SetExpanded(cfg.Theme.GuildsTree.AutoExpandChannels)
+	channelNode.SetReference(c.ID)
 	n.AddChild(channelNode)
 	return channelNode
 }
@@ -171,6 +187,8 @@ func (gt *GuildsTree) onSelected(n *tview.TreeNode) {
 
 	mainFlex.messagesText.reset()
 	mainFlex.messageInput.reset()
+
+	n.SetColor(tcell.ColorWhite)
 
 	if len(n.GetChildren()) != 0 {
 		n.SetExpanded(!n.IsExpanded())
