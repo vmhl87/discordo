@@ -123,6 +123,7 @@ func (gt *GuildsTree) createChannelNode(n *tview.TreeNode, c discord.Channel) *t
 
 	channelNode := tview.NewTreeNode(gt.channelToString(c))
 	channelNode.SetReference(c.ID)
+	channelNode.SetExpanded(cfg.Theme.GuildsTree.AutoExpandChannels)
 	n.AddChild(channelNode)
 	return channelNode
 }

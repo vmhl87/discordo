@@ -16,6 +16,7 @@ type (
 	}
 
 	GuildsTreeTheme struct {
+		AutoExpandChannels bool `toml:"auto_expand_channels"`
 		AutoExpandFolders bool `toml:"auto_expand_folders"`
 		Graphics          bool `toml:"graphics"`
 	}
@@ -36,8 +37,9 @@ func defaultTheme() Theme {
 		TitleColor:      "default",
 
 		GuildsTree: GuildsTreeTheme{
-			AutoExpandFolders: true,
-			Graphics:          true,
+			AutoExpandChannels: true,
+			AutoExpandFolders:  true,
+			Graphics:           true,
 		},
 		MessagesText: MessagesTextTheme{
 			AuthorColor:    "aqua",
