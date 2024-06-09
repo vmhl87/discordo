@@ -17,7 +17,7 @@ type GuildsTree struct {
 
 	selectedChannelID discord.ChannelID
 
-	DMs []*tview.TreeNode
+	DMs *tview.TreeNode
 }
 
 func newGuildsTree() *GuildsTree {

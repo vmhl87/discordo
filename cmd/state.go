@@ -53,6 +53,7 @@ func (s *State) onRequest(r httpdriver.Request) error {
 func (s *State) onReady(r *gateway.ReadyEvent) {
 	root := mainFlex.guildsTree.GetRoot()
 	dmNode := tview.NewTreeNode("Direct Messages")
+	mainFlex.guildsTree.DMs = dmNode
 	root.AddChild(dmNode)
 
 	folders := r.UserSettings.GuildFolders
@@ -86,6 +87,14 @@ func (s *State) onMessageCreate(m *gateway.MessageCreateEvent) {
 	if mainFlex.guildsTree.selectedChannelID.IsValid() && mainFlex.guildsTree.selectedChannelID == m.ChannelID {
 		mainFlex.messagesText.createMessage(m.Message)
 	} else {
+		for _, channel := range mainFlex.guildsTree.DMs.GetChildren() {
+			if channel.GetReference() == m.ChannelID {
+				channel.SetColor(tcell.GetColor(cfg.Theme.TitleColor))
+				if !mainFlex.guildsTree.DMs.IsExpanded() {
+					mainFlex.guildsTree.DMs.SetColor(tcell.GetColor(cfg.Theme.TitleColor))
+				}
+			}
+		}
 		for _, guild := range mainFlex.guildsTree.GetRoot().GetChildren() {
 			if guild.GetReference() == m.GuildID {
 				if (len(guild.GetChildren()) == 0 || !guild.IsExpanded()) {
