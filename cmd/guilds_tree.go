@@ -183,14 +183,14 @@ PARENT_CHANNELS:
 }
 
 func (gt *GuildsTree) onSelected(n *tview.TreeNode) {
-	gt.selectedChannelID = 0
-
-	mainFlex.messagesText.reset()
-	mainFlex.messageInput.reset()
-
 	n.SetColor(tcell.ColorWhite)
 
-	if len(n.GetChildren()) != 0 {
+	if len(n.GetChildren()) == 0 {
+		gt.selectedChannelID = 0
+
+		mainFlex.messagesText.reset()
+		mainFlex.messageInput.reset()
+	} else {
 		n.SetExpanded(!n.IsExpanded())
 		return
 	}
