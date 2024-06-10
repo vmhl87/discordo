@@ -51,6 +51,7 @@ func (mf *MainFlex) onInputCapture(event *tcell.EventKey) *tcell.EventKey {
 		app.SetFocus(mf.messageInput)
 		return nil
 	case cfg.Keys.ExitMessagesText:
+		mf.guildsTree.selectedChannelID = 0
 		mf.messagesText.reset()
 		mf.messageInput.reset()
 		app.SetFocus(mf.guildsTree)
