@@ -9,6 +9,7 @@ var (
 	italicRe        = regexp.MustCompile(`(?ms)\*(.*?)\*`)
 	underlineRe     = regexp.MustCompile(`(?ms)__(.*?)__`)
 	strikethroughRe = regexp.MustCompile(`(?ms)~~(.*?)~~`)
+	spoilerRe       = regexp.MustCompile(`(?ms)\|\|(.*?)\|\|`)
 	codeblockRe     = regexp.MustCompile("(?ms)`" + `([^` + "`" + `\n]+)` + "`")
 )
 
@@ -18,5 +19,6 @@ func Parse(input string) string {
 	input = underlineRe.ReplaceAllString(input, "[::u]$1[::U]")
 	input = strikethroughRe.ReplaceAllString(input, "[::s]$1[::S]")
 	input = codeblockRe.ReplaceAllString(input, "[::r]$1[::R]")
+	input = spoilerRe.ReplaceAllString(input, "[::d]||$1||[::D]")
 	return input
 }
