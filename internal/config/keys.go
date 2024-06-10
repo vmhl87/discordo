@@ -26,6 +26,7 @@ type (
 		SelectReply  string `toml:"select_reply"`
 		Reply        string `toml:"reply"`
 		ReplyMention string `toml:"reply_mention"`
+		ReplySend    string `toml:"reply_send"`
 
 		Delete string `toml:"delete"`
 		Yank   string `toml:"yank"`
@@ -61,6 +62,7 @@ func defaultKeys() Keys {
 
 			Reply:        "Rune[r]",
 			ReplyMention: "Rune[R]",
+			ReplySend:    "Ctrl+R",
 
 			Delete: "Rune[d]",
 			Yank:   "Rune[y]",

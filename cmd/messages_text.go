@@ -184,6 +184,10 @@ func (mt *MessagesText) onInputCapture(event *tcell.EventKey) *tcell.EventKey {
 	case cfg.Keys.MessagesText.ReplyMention:
 		mt.reply(true)
 		return nil
+	case cfg.Keys.MessagesText.ReplySend:
+		mt.reply(true)
+		mainFlex.messageInput.send()
+		return nil
 	case cfg.Keys.MessagesText.Delete:
 		mt.delete()
 		return nil
