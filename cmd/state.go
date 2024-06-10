@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"context"
+	"sort"
 	"log"
 	"runtime"
 
@@ -56,6 +57,22 @@ func (s *State) onReady(r *gateway.ReadyEvent) {
 	mainFlex.guildsTree.DMs = dmNode
 	root.AddChild(dmNode)
 
+	cs, err := discordState.Cabinet.PrivateChannels()
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	sort.Slice(cs, func(i, j int) bool {
+		return cs[i].LastMessageID > cs[j].LastMessageID
+	})
+
+	for _, c := range cs {
+		mainFlex.guildsTree.createChannelNode(dmNode, c)
+	}
+
+	dmNode.SetExpanded(false)
+
 	folders := r.UserSettings.GuildFolders
 	if len(folders) == 0 {
 		for _, g := range r.Guilds {
@@ -87,11 +104,13 @@ func (s *State) onMessageCreate(m *gateway.MessageCreateEvent) {
 	if mainFlex.guildsTree.selectedChannelID.IsValid() && mainFlex.guildsTree.selectedChannelID == m.ChannelID {
 		mainFlex.messagesText.createMessage(m.Message)
 	} else {
-		for _, channel := range mainFlex.guildsTree.DMs.GetChildren() {
-			if channel.GetReference() == m.ChannelID {
-				channel.SetColor(tcell.GetColor(cfg.Theme.TitleColor))
-				if !mainFlex.guildsTree.DMs.IsExpanded() {
-					mainFlex.guildsTree.DMs.SetColor(tcell.GetColor(cfg.Theme.TitleColor))
+		if len(mainFlex.guildsTree.DMs.GetChildren()) != 0 {
+			for _, channel := range mainFlex.guildsTree.DMs.GetChildren() {
+				if channel.GetReference() == m.ChannelID {
+					channel.SetColor(tcell.GetColor(cfg.Theme.TitleColor))
+					if !mainFlex.guildsTree.DMs.IsExpanded() {
+						mainFlex.guildsTree.DMs.SetColor(tcell.GetColor(cfg.Theme.TitleColor))
+					}
 				}
 			}
 		}

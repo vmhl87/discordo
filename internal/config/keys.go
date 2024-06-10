@@ -5,6 +5,7 @@ type (
 		FocusGuildsTree   string `toml:"focus_guilds_tree"`
 		FocusMessagesText string `toml:"focus_messages_text"`
 		FocusMessageInput string `toml:"focus_message_input"`
+		ExitMessagesText  string `toml:"exit_messages_text"`
 		ToggleGuildsTree  string `toml:"toggle_guild_tree"`
 
 		SelectPrevious string `toml:"select_previous"`
@@ -43,6 +44,7 @@ func defaultKeys() Keys {
 		FocusGuildsTree:   "Ctrl+G",
 		FocusMessagesText: "Ctrl+T",
 		FocusMessageInput: "Ctrl+P",
+		ExitMessagesText:  "Ctrl+W",
 		ToggleGuildsTree:  "Ctrl+B",
 
 		SelectPrevious: "Rune[k]",

@@ -196,18 +196,6 @@ func (gt *GuildsTree) onSelected(n *tview.TreeNode) {
 	}
 
 	switch ref := n.GetReference().(type) {
-	case discord.GuildID:
-		cs, err := discordState.Cabinet.Channels(ref)
-		if err != nil {
-			log.Println(err)
-			return
-		}
-
-		sort.Slice(cs, func(i, j int) bool {
-			return cs[i].Position < cs[j].Position
-		})
-
-		gt.createChannelNodes(n, cs)
 	case discord.ChannelID:
 		mainFlex.messagesText.drawMsgs(ref)
 		mainFlex.messagesText.ScrollToEnd()
@@ -222,20 +210,6 @@ func (gt *GuildsTree) onSelected(n *tview.TreeNode) {
 
 		gt.selectedChannelID = ref
 		app.SetFocus(mainFlex.messageInput)
-	case nil: // Direct messages
-		cs, err := discordState.Cabinet.PrivateChannels()
-		if err != nil {
-			log.Println(err)
-			return
-		}
-
-		sort.Slice(cs, func(i, j int) bool {
-			return cs[i].LastMessageID > cs[j].LastMessageID
-		})
-
-		for _, c := range cs {
-			gt.createChannelNode(n, c)
-		}
 	}
 }
 
