@@ -35,6 +35,8 @@ type (
 		Send   string `toml:"send"`
 		Editor string `toml:"editor"`
 		Cancel string `toml:"cancel"`
+
+		ExitMessagesText  string `toml:"exit_messages_text"`
 	}
 )
 
@@ -69,6 +71,8 @@ func defaultKeys() Keys {
 			Send:   "Enter",
 			Editor: "Ctrl+E",
 			Cancel: "Esc",
+
+			ExitMessagesText:  "Ctrl+W",
 		},
 	}
 }

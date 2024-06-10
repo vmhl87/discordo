@@ -4,6 +4,8 @@ import (
 	"context"
 	"log"
 	"runtime"
+	"strings"
+	"sort"
 
 	"github.com/ayn2op/discordo/internal/constants"
 	"github.com/diamondburned/arikawa/v3/api"
@@ -52,7 +54,24 @@ func (s *State) onRequest(r httpdriver.Request) error {
 func (s *State) onReady(r *gateway.ReadyEvent) {
 	root := mainFlex.guildsTree.GetRoot()
 	dmNode := tview.NewTreeNode("Direct Messages")
+	mainFlex.guildsTree.DMs = dmNode
 	root.AddChild(dmNode)
+
+	cs, err := discordState.Cabinet.PrivateChannels()
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	sort.Slice(cs, func(i, j int) bool {
+		return cs[i].LastMessageID > cs[j].LastMessageID
+	})
+
+	for _, c := range cs {
+		mainFlex.guildsTree.createChannelNode(dmNode, c)
+	}
+
+	dmNode.SetExpanded(false)
 
 	folders := r.UserSettings.GuildFolders
 	if len(folders) == 0 {
@@ -81,9 +100,51 @@ func (s *State) onReady(r *gateway.ReadyEvent) {
 	app.SetFocus(mainFlex.guildsTree)
 }
 
+func indicate(t *tview.TreeNode) {
+	if !strings.HasPrefix(t.GetText(), "[::b]") {
+		t.SetText("[::b]" + t.GetText() + "[::B]")
+	}
+}
+
 func (s *State) onMessageCreate(m *gateway.MessageCreateEvent) {
 	if mainFlex.guildsTree.selectedChannelID.IsValid() && mainFlex.guildsTree.selectedChannelID == m.ChannelID {
 		mainFlex.messagesText.createMessage(m.Message)
+	} else {
+		if len(mainFlex.guildsTree.DMs.GetChildren()) != 0 {
+			for _, channel := range mainFlex.guildsTree.DMs.GetChildren() {
+				if channel.GetReference() == m.ChannelID {
+					indicate(channel)
+					if !mainFlex.guildsTree.DMs.IsExpanded() {
+						indicate(mainFlex.guildsTree.DMs)
+					}
+				}
+			}
+		}
+
+		for _, guild := range mainFlex.guildsTree.GetRoot().GetChildren() {
+			if guild.GetReference() == m.GuildID {
+				if len(guild.GetChildren()) == 0 || !guild.IsExpanded() {
+					indicate(guild)
+				}
+
+				for _, channel := range guild.GetChildren() {
+					if len(channel.GetChildren()) == 0 {
+						if channel.GetReference() == m.ChannelID {
+							indicate(channel)
+						}
+					} else {
+						for _, chi := range channel.GetChildren() {
+							if chi.GetReference() == m.ChannelID {
+								indicate(chi)
+								if !channel.IsExpanded() {
+									indicate(channel)
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 }
 

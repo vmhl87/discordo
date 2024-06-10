@@ -61,6 +61,12 @@ func (mi *MessageInput) onInputCapture(event *tcell.EventKey) *tcell.EventKey {
 	case cfg.Keys.MessageInput.Cancel:
 		mi.reset()
 		return nil
+	case cfg.Keys.MessageInput.ExitMessagesText:
+		mainFlex.guildsTree.selectedChannelID = 0
+		mainFlex.messagesText.reset()
+		mainFlex.messageInput.reset()
+		app.SetFocus(mainFlex.guildsTree)
+		return nil
 	}
 
 	return event
