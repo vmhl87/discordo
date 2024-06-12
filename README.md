@@ -1,8 +1,8 @@
-# Discordo &middot; [![ci](https://github.com/ayn2op/discordo/actions/workflows/ci.yml/badge.svg)](https://github.com/ayn2op/discordo/actions/workflows/ci.yml) [![Go Report Card](https://goreportcard.com/badge/github.com/ayn2op/discordo)](https://goreportcard.com/report/github.com/ayn2op/discordo) [![license](https://img.shields.io/github/license/ayn2op/discordo?logo=github)](https://github.com/ayn2op/discordo/blob/master/LICENSE)
+# Discordo
 
-Discordo is a lightweight, secure, and feature-rich Discord terminal client. Heavily work-in-progress, expect breaking changes.
+This is a personal fork of [Discordo](https://github.com/ayn2opdiscordo) with several personal modifications.
 
-![Preview](.github/preview.png)
+Color and formatting is slightly modified and unread indicators are shown for any channels that recieve new messages during the duration of your session.
 
 - Lightweight
 - Secure
@@ -13,23 +13,14 @@ Discordo is a lightweight, secure, and feature-rich Discord terminal client. Hea
   - Mouse & clipboard support
   - 2-Factor authentication
   - Partial [Discord-flavored markdown](https://support.discord.com/hc/en-us/articles/210298617-Markdown-Text-101-Chat-Formatting-Bold-Italic-Underline-)
+  - Unread indicators
 
 ## Installation
 
-### Prebuilt binaries
-
-You can download and install a [prebuilt binary here](https://nightly.link/ayn2op/discordo/workflows/ci/main) for Windows, macOS, or Linux.
-
-### Package managers
-
-- Arch Linux: `yay -S discordo-git`
-- FreeBSD: `pkg install discordo` or via the ports system `make -C /usr/ports/net-im/discordo install clean`.
-- NixOS: `nix-shell -p discordo`
-
-### Building from source
+You will have to build this package from source.
 
 ```bash
-git clone https://github.com/ayn2op/discordo
+git clone https://github.com/vmhl87/discordo
 cd discordo
 go build .
 ```
@@ -58,8 +49,6 @@ The configuration file allows you to configure and customize the behavior, keybi
 ```toml
 mouse = true
 
-timestamps = false
-timestamps_before_author = false
 timestamps_format = "3:04PM"
 
 messages_limit = 50
@@ -69,6 +58,7 @@ editor = "default"
 focus_guilds_tree = "Ctrl+G"
 focus_messages_text = "Ctrl+T"
 focus_message_input = "Ctrl+P"
+exit_messages_text = "Ctrl+W"
 toggle_guild_tree = "Ctrl+B"
 select_previous = "Rune[k]"
 select_next = "Rune[j]"
@@ -81,6 +71,7 @@ select_current = "Enter"
 [keys.messages_text]
 select_reply = "Rune[s]"
 reply = "Rune[r]"
+reply_send = "Ctrl+R"
 reply_mention = "Rune[R]"
 delete = "Rune[d]"
 yank = "Rune[y]"
@@ -99,6 +90,7 @@ title_color = "default"
 background_color = "default"
 
 [theme.guilds_tree]
+auto_expand_channels = true
 auto_expand_folders = true
 graphics = true
 
