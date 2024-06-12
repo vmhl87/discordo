@@ -1,6 +1,6 @@
 # Discordo
 
-This is a personal fork of [Discordo](https://github.com/ayn2opdiscordo) with several personal modifications.
+This is a personal fork of [Discordo](https://github.com/ayn2op/discordo) with several personal modifications.
 
 Color and formatting is slightly modified and unread indicators are shown for any channels that recieve new messages during the duration of your session.
 
