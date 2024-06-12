@@ -1,19 +1,8 @@
 # Discordo
 
-This is a personal fork of [Discordo](https://github.com/ayn2opdiscordo) with several personal modifications.
+This is a personal fork of [Discordo](https://github.com/ayn2op/discordo) with several personal modifications. Visit the original for more information.
 
 Color and formatting is slightly modified and unread indicators are shown for any channels that recieve new messages during the duration of your session.
-
-- Lightweight
-- Secure
-- Configurable
-- Cross-platform
-- Minimalistic
-- Feature-rich
-  - Mouse & clipboard support
-  - 2-Factor authentication
-  - Partial [Discord-flavored markdown](https://support.discord.com/hc/en-us/articles/210298617-Markdown-Text-101-Chat-Formatting-Bold-Italic-Underline-)
-  - Unread indicators
 
 ## Installation
 
@@ -25,16 +14,11 @@ cd discordo
 go build .
 ```
 
-### Linux clipboard support
-
-- `xclip` or `xsel` for X11 (`apt install xclip`)
-- `wl-clipboard` for Wayland (`apt install wl-clipboard`)
-
 ## Usage
 
 1. Run the `discordo` executable with no arguments.
 
-> If you are logging in using an authentication token, provide the `token` command-line flag to the executable (eg: `--token "OTI2MDU5NTQxNDE2Nzc5ODA2.Yc2KKA.2iZ-5JxgxG-9Ub8GHzBSn-NJjNg"`). The token is stored securely in the default OS-specific keyring.
+> If you are logging in using an authentication token, provide the `token` command-line flag to the executable (eg: `--token "OTI2MDU5NTQxNDE2Nzc5ODA2.Yc2KKA.2iZ-5JxgxG-9Ub8GHzBSn-NJjNg"`). The token is stored securely in the default OS-specific keyring. (disclaimer: this feature seems to be broken)
 
 2. Enter your email and password and click on the "Login" button to continue.
 
