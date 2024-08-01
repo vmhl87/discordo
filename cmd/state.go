@@ -110,6 +110,7 @@ func (s *State) onMessageCreate(m *gateway.MessageCreateEvent) {
 					channel.SetColor(tcell.GetColor(cfg.Theme.TitleColor))
 					if !mainFlex.guildsTree.DMs.IsExpanded() {
 						mainFlex.guildsTree.DMs.SetColor(tcell.GetColor(cfg.Theme.TitleColor))
+						app.Draw();
 					}
 				}
 			}
@@ -118,12 +119,14 @@ func (s *State) onMessageCreate(m *gateway.MessageCreateEvent) {
 			if guild.GetReference() == m.GuildID {
 				if (len(guild.GetChildren()) == 0 || !guild.IsExpanded()) {
 					guild.SetColor(tcell.GetColor(cfg.Theme.TitleColor))
+					app.Draw()
 				}
 
 				for _, channel := range guild.GetChildren() {
 					if (len(channel.GetChildren()) == 0) {
 						if channel.GetReference() == m.ChannelID {
 							channel.SetColor(tcell.GetColor(cfg.Theme.TitleColor))
+							app.Draw()
 						}
 					} else {
 						for _, chi := range channel.GetChildren() {
@@ -131,6 +134,7 @@ func (s *State) onMessageCreate(m *gateway.MessageCreateEvent) {
 								chi.SetColor(tcell.GetColor(cfg.Theme.TitleColor))
 								if !channel.IsExpanded() {
 									channel.SetColor(tcell.GetColor(cfg.Theme.TitleColor))
+									app.Draw()
 								}
 							}
 						}
