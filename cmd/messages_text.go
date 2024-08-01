@@ -7,6 +7,7 @@ import (
 	"log"
 	"strings"
 	"time"
+	"unicode"
 
 	"github.com/atotto/clipboard"
 	"github.com/ayn2op/discordo/internal/markdown"
@@ -111,7 +112,7 @@ func (mt *MessagesText) createHeader(w io.Writer, m discord.Message, isReply boo
 		fmt.Fprintf(w, "[-:-:b][%s]", cfg.Theme.MessagesText.AuthorColor)
 	}
 
-	fmt.Fprintf(w, "%s[-:-:-] ", m.Author.Username)
+	fmt.Fprintf(w, "%s[-:-:-] ", strp(m.Author.Username))
 
 	if isReply {
 		fmt.Fprintf(mt, "[::id]")
@@ -123,7 +124,7 @@ func parseIDsToUsernames(m discord.Message) string {
 	for _, mention := range m.Mentions {
 		toReplace = append(toReplace,
 			fmt.Sprintf("<@%s>", mention.User.ID.String()),
-			fmt.Sprintf("__**@%s**__", mention.User.Username),
+			fmt.Sprintf("__**@%s**__", strp(mention.User.Username)),
 		)
 	}
 
@@ -133,9 +134,9 @@ func parseIDsToUsernames(m discord.Message) string {
 func (mt *MessagesText) createBody(w io.Writer, m discord.Message, isReply bool) {
 	var body string
 	if len(m.Mentions) > 0 {
-		body = parseIDsToUsernames(m)
+		body = strp(parseIDsToUsernames(m))
 	} else {
-		body = m.Content
+		body = strp(m.Content)
 	}
 
 	if isReply {
@@ -145,6 +146,15 @@ func (mt *MessagesText) createBody(w io.Writer, m discord.Message, isReply bool)
 	if isReply {
 		fmt.Fprint(w, "[::-]")
 	}
+}
+
+func strp(in string) string {
+	return strings.Map(func(r rune) rune {
+		if r > unicode.MaxASCII {
+			return '░'
+		}
+		return r
+	}, in)
 }
 
 func (mt *MessagesText) createFooter(w io.Writer, m discord.Message) {
